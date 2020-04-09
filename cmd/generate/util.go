@@ -10,7 +10,7 @@ import (
 // ----------
 
 func writeJson(destination string, v interface{}) error {
-	out, err := json.Marshal(v)
+	out, err := json.MarshalIndent(v, "", "\t")
 	if err != nil {
 		return err
 	}

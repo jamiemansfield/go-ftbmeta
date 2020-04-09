@@ -46,4 +46,26 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// ROUTE: /pack/{slug}/
+	packPath := filepath.Join(DEST, "pack")
+	if err = os.MkdirAll(packPath, os.ModePerm); err != nil {
+		panic(err)
+	}
+
+	// -> Create pack entries
+	for _, pack := range packs {
+		fullPack := ftbmeta.NewPack(pack)
+
+		path := filepath.Join(packPath, fullPack.Slug)
+		if err = os.MkdirAll(path, os.ModePerm); err != nil {
+			panic(err)
+		}
+
+		// -> Write to /pack/{slug}/index.json
+		err = writeJson(filepath.Join(path, "index.json"), fullPack)
+		if err != nil {
+			panic(err)
+		}
+	}
 }
