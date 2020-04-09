@@ -6,6 +6,9 @@ import (
 )
 
 type PackExtras struct {
+	Overrides struct {
+		Synopsis string `json:"synopsis"`
+	} `json:"overrides"`
 	Links map[string]string `json:"links"`
 	Servers []*Server `json:"servers"`
 }

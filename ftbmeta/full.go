@@ -2,6 +2,7 @@ package ftbmeta
 
 import (
 	"github.com/gosimple/slug"
+	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/extra"
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/util"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
 )
@@ -20,14 +21,22 @@ type Pack struct {
 	Authors []*modpacksch.Author `json:"authors"`
 	Versions []*VersionInfo      `json:"versions"`
 	Tags []*modpacksch.Tag       `json:"tags"`
+
+	// Additional
+	Links map[string]string `json:"links,omitempty"`
 }
 
-func NewPack(pack *modpacksch.Pack) *Pack {
+func NewPack(pack *modpacksch.Pack, extras *extra.PackExtras) *Pack {
+	synopsis := pack.Synopsis
+	if extras.Overrides.Synopsis != "" {
+		synopsis = extras.Overrides.Synopsis
+	}
+
 	return &Pack{
 		ID:          pack.ID,
 		Slug:        slug.MakeLang(pack.Name, "en"),
 		Name:        pack.Name,
-		Synopsis:    pack.Synopsis,
+		Synopsis:    synopsis,
 		Description: pack.Description,
 		Featured:    pack.Featured,
 		Type:        pack.Type,
@@ -36,6 +45,7 @@ func NewPack(pack *modpacksch.Pack) *Pack {
 		Authors:     pack.Authors,
 		Versions:    ConvertVersionInfos(pack.Versions),
 		Tags:        pack.Tags,
+		Links:       extras.Links,
 	}
 }
 

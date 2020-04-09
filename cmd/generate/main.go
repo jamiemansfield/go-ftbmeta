@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"github.com/gosimple/slug"
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta"
+	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/extra"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
 	"os"
 	"path/filepath"
@@ -11,6 +13,7 @@ import (
 
 var (
 	DEST = "_site"
+	EXTRA = "_extrameta"
 )
 
 func main() {
@@ -56,7 +59,14 @@ func main() {
 
 	// -> Create pack entries
 	for _, pack := range packs {
-		fullPack := ftbmeta.NewPack(pack)
+		extras, err := extra.GetPackExtras(EXTRA, slug.MakeLang(pack.Name, "en"))
+		if err != nil {
+			extras = &extra.PackExtras{
+				Links: map[string]string{},
+			}
+		}
+
+		fullPack := ftbmeta.NewPack(pack, extras)
 
 		path := filepath.Join(packPath, fullPack.Slug)
 		if err = os.MkdirAll(path, os.ModePerm); err != nil {
