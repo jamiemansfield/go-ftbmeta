@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
 	"os"
@@ -47,7 +48,7 @@ func main() {
 		panic(err)
 	}
 
-	// ROUTE: /pack/{slug}/
+	// ROUTE: /pack/{slug}/ AND /pack/{pack slug}/{version slug}/
 	packPath := filepath.Join(DEST, "pack")
 	if err = os.MkdirAll(packPath, os.ModePerm); err != nil {
 		panic(err)
@@ -66,6 +67,31 @@ func main() {
 		err = writeJson(filepath.Join(path, "index.json"), fullPack)
 		if err != nil {
 			panic(err)
+		}
+
+		for _, versionInfo := range pack.Versions {
+			version, err := client.Packs.GetVersion(pack.ID, versionInfo.ID)
+			if err != nil {
+				panic(err)
+			}
+			changelog, err := client.Packs.GetVersionChangelog(pack.ID, versionInfo.ID)
+			if err != nil {
+				fmt.Printf("%s %s missing changelog: %s\n", pack.Name, version.Name, err)
+				changelog = &modpacksch.VersionChangelog{}
+			}
+
+			fullVersion := ftbmeta.NewVersion(version, changelog)
+
+			versionPath := filepath.Join(path, fullVersion.Slug)
+			if err = os.MkdirAll(versionPath, os.ModePerm); err != nil {
+				panic(err)
+			}
+
+			// -> Write to /pack/{pack slug}/{version slug}/index.json
+			err = writeJson(filepath.Join(versionPath, "index.json"), fullVersion)
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
