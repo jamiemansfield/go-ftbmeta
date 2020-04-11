@@ -1,9 +1,6 @@
 package ftbmeta
 
 import (
-	"github.com/gosimple/slug"
-	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/extra"
-	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/util"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
 )
 
@@ -26,37 +23,6 @@ type Pack struct {
 	Links map[string]string `json:"links,omitempty"`
 }
 
-func NewPack(pack *modpacksch.Pack, extras *extra.PackExtras) *Pack {
-	synopsis := pack.Synopsis
-	if extras.Overrides.Synopsis != "" {
-		synopsis = extras.Overrides.Synopsis
-	}
-
-	return &Pack{
-		ID:          pack.ID,
-		Slug:        slug.MakeLang(pack.Name, "en"),
-		Name:        pack.Name,
-		Synopsis:    synopsis,
-		Description: pack.Description,
-		Featured:    pack.Featured,
-		Type:        pack.Type,
-		Updated:     util.GetPackLastUpdated(pack),
-		Art:         ConvertArt(pack.Art),
-		Authors:     pack.Authors,
-		Versions:    ConvertVersionInfos(pack.Versions),
-		Tags:        pack.Tags,
-		Links:       extras.Links,
-	}
-}
-
-func ConvertArt(art []*modpacksch.Art) map[string]*Art {
-	var newArt = map[string]*Art{}
-	for _, piece := range art {
-		newArt[piece.Type] = NewArt(piece)
-	}
-	return newArt
-}
-
 type VersionInfo struct {
 	ID int `json:"id"`
 	Slug string `json:"slug"`
@@ -64,35 +30,4 @@ type VersionInfo struct {
 	Type string `json:"type"`
 	Updated int64 `json:"updated"`
 	Specs *Specs `json:"specs"`
-}
-
-func NewVersionInfo(version *modpacksch.VersionInfo) *VersionInfo {
-	return &VersionInfo{
-		ID:      version.ID,
-		Slug:    slug.MakeLang(version.Name, "en"),
-		Name:    version.Name,
-		Type:    version.Type,
-		Updated: version.Updated,
-		Specs:   NewSpecs(version.Specs),
-	}
-}
-
-func ConvertVersionInfos(versions []*modpacksch.VersionInfo) []*VersionInfo {
-	var infos []*VersionInfo
-	for _, version := range versions {
-		infos = append(infos, NewVersionInfo(version))
-	}
-	return infos
-}
-
-type Specs struct {
-	Minimum int `json:"minimum"`
-	Recommended int `json:"recommended"`
-}
-
-func NewSpecs(specs *modpacksch.Specs) *Specs {
-	return &Specs{
-		Minimum:     specs.Minimum,
-		Recommended: specs.Recommended,
-	}
 }

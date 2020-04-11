@@ -42,7 +42,7 @@ func main() {
 	// -> Create ftbmeta.PackInfo's
 	var packInfos []*ftbmeta.PackInfo
 	for _, pack := range packs {
-		packInfos = append(packInfos, ftbmeta.NewPackInfo(pack))
+		packInfos = append(packInfos, convertPackInfo(pack))
 	}
 
 	// -> Write to /packs/index.json
@@ -66,7 +66,7 @@ func main() {
 			}
 		}
 
-		fullPack := ftbmeta.NewPack(pack, extras)
+		fullPack := convertPack(pack, extras)
 
 		path := filepath.Join(packPath, fullPack.Slug)
 		if err = os.MkdirAll(path, os.ModePerm); err != nil {
@@ -90,7 +90,7 @@ func main() {
 				changelog = &modpacksch.VersionChangelog{}
 			}
 
-			fullVersion := ftbmeta.NewVersion(version, changelog)
+			fullVersion := convertVersion(version, changelog)
 
 			versionPath := filepath.Join(path, fullVersion.Slug)
 			if err = os.MkdirAll(versionPath, os.ModePerm); err != nil {

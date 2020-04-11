@@ -1,4 +1,4 @@
-package util
+package main
 
 import (
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
@@ -19,7 +19,7 @@ func (p newestDate) Less(i, j int) bool {
 	return p[i] > p[j]
 }
 
-func GetPackLastUpdated(pack *modpacksch.Pack) int64 {
+func getPackLastUpdated(pack *modpacksch.Pack) int64 {
 	var dates []int64
 	dates = append(dates, pack.Updated)
 	for _, version := range pack.Versions {
