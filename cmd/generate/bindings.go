@@ -35,6 +35,39 @@ func convertSpecs(specs *modpacksch.Specs) *ftbmeta.Specs {
 	}
 }
 
+func convertAuthors(authors []*modpacksch.Author) []*ftbmeta.Author {
+	var newAuthors []*ftbmeta.Author
+	for _, author := range authors {
+		newAuthors = append(newAuthors, convertAuthor(author))
+	}
+	return newAuthors
+}
+
+func convertAuthor(author *modpacksch.Author) *ftbmeta.Author {
+	return &ftbmeta.Author{
+		ID:      author.ID,
+		Name:    author.Name,
+		Type:    author.Type,
+		Website: author.Website,
+		Updated: author.Updated,
+	}
+}
+
+func convertTags(tags []*modpacksch.Tag) []*ftbmeta.Tag {
+	var newTags []*ftbmeta.Tag
+	for _, author := range tags {
+		newTags = append(newTags, convertTag(author))
+	}
+	return newTags
+}
+
+func convertTag(tag *modpacksch.Tag) *ftbmeta.Tag {
+	return &ftbmeta.Tag{
+		ID:   tag.ID,
+		Name: tag.Name,
+	}
+}
+
 // full
 
 func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack {
@@ -53,9 +86,9 @@ func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack 
 		Type:        pack.Type,
 		Updated:     getPackLastUpdated(pack),
 		Art:         convertArtMap(pack.Art),
-		Authors:     pack.Authors,
+		Authors:     convertAuthors(pack.Authors),
 		Versions:    convertVersionInfos(pack.Versions),
-		Tags:        pack.Tags,
+		Tags:        convertTags(pack.Tags),
 		Links:       extras.Links,
 	}
 }
@@ -91,11 +124,54 @@ func convertPackInfo(pack *modpacksch.Pack) *ftbmeta.PackInfo {
 		Type:     pack.Type,
 		Updated:  getPackLastUpdated(pack),
 		Icon:     convertArt(pack.GetIcon()),
-		Tags:     pack.Tags,
+		Tags:     convertTags(pack.Tags),
 	}
 }
 
 // version
+
+func convertTargets(targets []*modpacksch.Target) []*ftbmeta.Target {
+	var newTargets []*ftbmeta.Target
+	for _, target := range targets {
+		newTargets = append(newTargets, convertTarget(target))
+	}
+	return newTargets
+}
+
+func convertTarget(target *modpacksch.Target) *ftbmeta.Target {
+	return &ftbmeta.Target{
+		ID:      target.ID,
+		Type:    target.Type,
+		Name:    target.Name,
+		Version: target.Version,
+		Updated: target.Updated,
+	}
+}
+
+func convertFiles(files []*modpacksch.File) []*ftbmeta.File {
+	var newFiles []*ftbmeta.File
+	for _, file := range files {
+		newFiles = append(newFiles, convertFile(file))
+	}
+	return newFiles
+}
+
+func convertFile(file *modpacksch.File) *ftbmeta.File {
+	return &ftbmeta.File{
+		ID:         file.ID,
+		Type:       file.Type,
+		Path:       file.Path,
+		Name:       file.Name,
+		Version:    file.Version,
+		URL:        file.URL,
+		Sha1:       file.Sha1,
+		Size:       file.Size,
+		ClientOnly: file.ClientOnly,
+		ServerOnly: file.ServerOnly,
+		Optional:   file.Optional,
+		Updated:    file.Updated,
+	}
+}
 
 func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionChangelog) *ftbmeta.Version {
 	return &ftbmeta.Version{
@@ -107,7 +183,7 @@ func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionCh
 		Type:      version.Type,
 		Updated:   version.Updated,
 		Specs:     convertSpecs(version.Specs),
-		Targets:   version.Targets,
-		Files:     version.Files,
+		Targets:   convertTargets(version.Targets),
+		Files:     convertFiles(version.Files),
 	}
 }

@@ -13,3 +13,16 @@ type Specs struct {
 	Minimum int `json:"minimum"`
 	Recommended int `json:"recommended"`
 }
+
+type Author struct {
+	ID int `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
+	Website string `json:"website"`
+	Updated int64 `json:"updated"`
+}
+
+type Tag struct {
+	ID int `json:"id"`
+	Name string `json:"name"`
+}

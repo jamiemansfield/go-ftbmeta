@@ -1,9 +1,5 @@
 package ftbmeta
 
-import (
-	"github.com/jamiemansfield/go-modpacksch/modpacksch"
-)
-
 type Pack struct {
 	ID int `json:"id"`
 	Slug string `json:"slug"`
@@ -15,9 +11,9 @@ type Pack struct {
 	Updated int64 `json:"updated"`
 
 	Art map[string]*Art          `json:"art"`
-	Authors []*modpacksch.Author `json:"authors"`
+	Authors []*Author `json:"authors"`
 	Versions []*VersionInfo      `json:"versions"`
-	Tags []*modpacksch.Tag       `json:"tags"`
+	Tags []*Tag       `json:"tags"`
 
 	// Additional
 	Links map[string]string `json:"links,omitempty"`
