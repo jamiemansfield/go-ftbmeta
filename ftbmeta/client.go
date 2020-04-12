@@ -39,8 +39,8 @@ func NewClient(httpClient *http.Client) *Client {
 	baseURL, _ := url.Parse(defaultBaseURL)
 
 	c := &Client{
-		client: httpClient,
-		BaseURL: baseURL,
+		client:    httpClient,
+		BaseURL:   baseURL,
 		UserAgent: defaultUserAgent,
 	}
 	c.Packs = &PackService{client: c}

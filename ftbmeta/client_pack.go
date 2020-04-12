@@ -14,7 +14,7 @@ func (s *PackService) GetPacks() ([]*PackInfo, error) {
 }
 
 func (s *PackService) GetPack(pack string) (*Pack, error) {
-	request, err := s.client.NewRequest("GET", "pack/" + pack + "/")
+	request, err := s.client.NewRequest("GET", "pack/"+pack+"/")
 	if err != nil {
 		return nil, err
 	}
@@ -25,7 +25,7 @@ func (s *PackService) GetPack(pack string) (*Pack, error) {
 }
 
 func (s *PackService) GetVersion(pack string, version string) (*Version, error) {
-	request, err := s.client.NewRequest("GET", "pack/" + pack + "/" + version + "/")
+	request, err := s.client.NewRequest("GET", "pack/"+pack+"/"+version+"/")
 	if err != nil {
 		return nil, err
 	}

@@ -9,8 +9,8 @@ type PackExtras struct {
 	Overrides struct {
 		Synopsis string `json:"synopsis"`
 	} `json:"overrides"`
-	Links map[string]string `json:"links"`
-	Servers []*Server `json:"servers"`
+	Links   map[string]string `json:"links"`
+	Servers []*Server         `json:"servers"`
 }
 
 func GetPackExtras(root string, pack string) (*PackExtras, error) {
@@ -30,7 +30,7 @@ func GetPackExtras(root string, pack string) (*PackExtras, error) {
 }
 
 type Server struct {
-	Name string `json:"name"`
-	Website string `json:"website"`
+	Name     string `json:"name"`
+	Website  string `json:"website"`
 	Hostname string `json:"hostname"`
 }
