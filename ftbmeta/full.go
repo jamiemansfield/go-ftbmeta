@@ -16,7 +16,8 @@ type Pack struct {
 	Tags     []*Tag          `json:"tags"`
 
 	// Additional
-	Links map[string]string `json:"links,omitempty"`
+	Links  map[string]string `json:"links,omitempty"`
+	Latest map[string]string `json:"latest"`
 }
 
 type VersionInfo struct {

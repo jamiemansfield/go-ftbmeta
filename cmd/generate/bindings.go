@@ -5,6 +5,7 @@ import (
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta"
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/extra"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
+	"sort"
 	"strings"
 )
 
@@ -72,9 +73,19 @@ func convertTag(tag *modpacksch.Tag) *ftbmeta.Tag {
 // full
 
 func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack {
+	// Handle overrides
 	synopsis := pack.Synopsis
 	if extras.Overrides.Synopsis != "" {
 		synopsis = extras.Overrides.Synopsis
+	}
+
+	// Sort pack versions in increasing order
+	sort.Sort(versionsByLatest(pack.Versions))
+
+	// Create latest map
+	latest := map[string]string{}
+	for _, version := range pack.Versions {
+		latest[strings.ToLower(version.Type)] = slug.MakeLang(version.Name, "en")
 	}
 
 	return &ftbmeta.Pack{
@@ -91,6 +102,7 @@ func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack 
 		Versions:    convertVersionInfos(pack.Versions),
 		Tags:        convertTags(pack.Tags),
 		Links:       extras.Links,
+		Latest:      latest,
 	}
 }
 
