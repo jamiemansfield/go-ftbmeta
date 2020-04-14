@@ -5,6 +5,7 @@ import (
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta"
 	"github.com/jamiemansfield/go-ftbmeta/ftbmeta/extra"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
+	"strings"
 )
 
 // common
@@ -83,7 +84,7 @@ func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack 
 		Synopsis:    synopsis,
 		Description: pack.Description,
 		Featured:    pack.Featured,
-		Type:        pack.Type,
+		Type:        strings.ToLower(pack.Type),
 		Updated:     getPackLastUpdated(pack),
 		Art:         convertArtMap(pack.Art),
 		Authors:     convertAuthors(pack.Authors),
@@ -98,7 +99,7 @@ func convertVersionInfo(version *modpacksch.VersionInfo) *ftbmeta.VersionInfo {
 		ID:      version.ID,
 		Slug:    slug.MakeLang(version.Name, "en"),
 		Name:    version.Name,
-		Type:    version.Type,
+		Type:    strings.ToLower(version.Type),
 		Updated: version.Updated,
 		Specs:   convertSpecs(version.Specs),
 	}
@@ -121,7 +122,7 @@ func convertPackInfo(pack *modpacksch.Pack) *ftbmeta.PackInfo {
 		Name:     pack.Name,
 		Synopsis: pack.Synopsis,
 		Featured: pack.Featured,
-		Type:     pack.Type,
+		Type:     strings.ToLower(pack.Type),
 		Updated:  getPackLastUpdated(pack),
 		Icon:     convertArt(pack.GetIcon()),
 		Tags:     convertTags(pack.Tags),
@@ -180,7 +181,7 @@ func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionCh
 		Slug:      slug.MakeLang(version.Name, "en"),
 		Name:      version.Name,
 		Changelog: changelog.Content,
-		Type:      version.Type,
+		Type:      strings.ToLower(version.Type),
 		Updated:   version.Updated,
 		Specs:     convertSpecs(version.Specs),
 		Targets:   convertTargets(version.Targets),
