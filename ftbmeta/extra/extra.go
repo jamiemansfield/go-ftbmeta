@@ -11,6 +11,7 @@ type PackExtras struct {
 	} `json:"overrides"`
 	Links   map[string]string `json:"links"`
 	Servers []*Server         `json:"servers"`
+	Changelogs map[string]string `json:"changelogs"`
 }
 
 func GetPackExtras(root string, pack string) (*PackExtras, error) {

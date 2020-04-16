@@ -186,13 +186,20 @@ func convertFile(file *modpacksch.File) *ftbmeta.File {
 	}
 }
 
-func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionChangelog) *ftbmeta.Version {
+func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionChangelog, extras *extra.PackExtras) *ftbmeta.Version {
+	versionSlug := slug.MakeLang(version.Name, "en")
+
+	changelogRaw := changelog.Content
+	if extras.Changelogs[versionSlug] != "" {
+		changelogRaw = extras.Changelogs[versionSlug]
+	}
+
 	return &ftbmeta.Version{
 		ID:        version.ID,
 		Parent:    version.Parent,
-		Slug:      slug.MakeLang(version.Name, "en"),
+		Slug:      versionSlug,
 		Name:      version.Name,
-		Changelog: changelog.Content,
+		Changelog: changelogRaw,
 		Type:      strings.ToLower(version.Type),
 		Updated:   version.Updated,
 		Specs:     convertSpecs(version.Specs),

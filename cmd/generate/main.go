@@ -90,7 +90,7 @@ func main() {
 				changelog = &modpacksch.VersionChangelog{}
 			}
 
-			fullVersion := convertVersion(version, changelog)
+			fullVersion := convertVersion(version, changelog, extras)
 
 			versionPath := filepath.Join(path, fullVersion.Slug)
 			if err = os.MkdirAll(versionPath, os.ModePerm); err != nil {
