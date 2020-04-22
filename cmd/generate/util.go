@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"github.com/Masterminds/semver/v3"
 	"github.com/jamiemansfield/go-modpacksch/modpacksch"
 	"io/ioutil"
 )
@@ -35,7 +36,8 @@ func (p packsById) Less(i, j int) bool {
 	return p[i].ID < p[j].ID
 }
 
-// Arrange packs by their updated time in increasing order.
+// Arrange packs by semver, falling back to updated time if needs
+// be.
 type versionsByLatest []*modpacksch.VersionInfo
 
 func (p versionsByLatest) Len() int {
@@ -47,6 +49,14 @@ func (p versionsByLatest) Swap(i int, j int) {
 }
 
 func (p versionsByLatest) Less(i, j int) bool {
-	return p[i].Updated < p[j].Updated
+	semI, errI := semver.NewVersion(p[i].Name)
+	semJ, errJ := semver.NewVersion(p[j].Name)
+
+	// Falback to updated time, if needs be
+	if errI != nil || errJ != nil {
+		return p[i].Updated < p[j].Updated
+	}
+
+	return semI.LessThan(semJ)
 }
 
