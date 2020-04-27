@@ -12,6 +12,9 @@ type Version struct {
 	Specs   *Specs    `json:"specs"`
 	Targets []*Target `json:"targets"`
 	Files   []*File   `json:"files"`
+
+	// Additional
+	Advisories []*Advisory `json:"advisories,omitempty"`
 }
 
 type Target struct {

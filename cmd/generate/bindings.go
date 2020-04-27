@@ -103,6 +103,7 @@ func convertPack(pack *modpacksch.Pack, extras *extra.PackExtras) *ftbmeta.Pack 
 		Tags:        convertTags(pack.Tags),
 		Links:       extras.Links,
 		Latest:      latest,
+		Advisories:  extras.Advisories["current"],
 	}
 }
 
@@ -195,15 +196,16 @@ func convertVersion(version *modpacksch.Version, changelog *modpacksch.VersionCh
 	}
 
 	return &ftbmeta.Version{
-		ID:        version.ID,
-		Parent:    version.Parent,
-		Slug:      versionSlug,
-		Name:      version.Name,
-		Changelog: changelogRaw,
-		Type:      strings.ToLower(version.Type),
-		Updated:   version.Updated,
-		Specs:     convertSpecs(version.Specs),
-		Targets:   convertTargets(version.Targets),
-		Files:     convertFiles(version.Files),
+		ID:         version.ID,
+		Parent:     version.Parent,
+		Slug:       versionSlug,
+		Name:       version.Name,
+		Changelog:  changelogRaw,
+		Type:       strings.ToLower(version.Type),
+		Updated:    version.Updated,
+		Specs:      convertSpecs(version.Specs),
+		Targets:    convertTargets(version.Targets),
+		Files:      convertFiles(version.Files),
+		Advisories: extras.Advisories[versionSlug],
 	}
 }

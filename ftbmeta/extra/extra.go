@@ -2,6 +2,7 @@ package extra
 
 import (
 	"encoding/json"
+	"github.com/jamiemansfield/go-ftbmeta/ftbmeta"
 	"io/ioutil"
 )
 
@@ -9,9 +10,10 @@ type PackExtras struct {
 	Overrides struct {
 		Synopsis string `json:"synopsis"`
 	} `json:"overrides"`
-	Links   map[string]string `json:"links"`
-	Servers []*Server         `json:"servers"`
-	Changelogs map[string]string `json:"changelogs"`
+	Advisories map[string][]*ftbmeta.Advisory `json:"advisories"`
+	Links      map[string]string              `json:"links"`
+	Servers    []*Server                      `json:"servers"`
+	Changelogs map[string]string              `json:"changelogs"`
 }
 
 func GetPackExtras(root string, pack string) (*PackExtras, error) {
