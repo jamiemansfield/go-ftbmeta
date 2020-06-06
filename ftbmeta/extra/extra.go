@@ -14,9 +14,10 @@ type PackExtras struct {
 
 type PackOverrides struct {
 	// The pack itself
-	Synopsis    string         `json:"synopsis"`
-	Description string         `json:"description"`
-	ExtraTags   []*ftbmeta.Tag `json:"+tags"`
+	Synopsis    string                 `json:"synopsis"`
+	Description string                 `json:"description"`
+	ExtraTags   []*ftbmeta.Tag         `json:"+tags"`
+	Availability *ftbmeta.Availability `json:"availability"`
 
 	// The pack's versions
 	Changelogs map[string]string `json:"changelogs"`

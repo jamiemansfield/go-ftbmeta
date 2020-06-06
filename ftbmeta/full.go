@@ -16,9 +16,10 @@ type Pack struct {
 	Tags     []*Tag          `json:"tags"`
 
 	// Additional
-	Advisories []*Advisory       `json:"advisories,omitempty"`
-	Links      map[string]string `json:"links,omitempty"`
-	Latest     map[string]string `json:"latest"`
+	Advisories   []*Advisory       `json:"advisories,omitempty"`
+	Links        map[string]string `json:"links,omitempty"`
+	Latest       map[string]string `json:"latest"`
+	Availability *Availability     `json:"availability,omitempty"`
 }
 
 type VersionInfo struct {
@@ -28,4 +29,13 @@ type VersionInfo struct {
 	Type    string `json:"type"`
 	Updated int64  `json:"updated"`
 	Specs   *Specs `json:"specs"`
+}
+
+// Availability exposes the continual availability of a pack on an
+// alternate platform.
+type Availability struct {
+	Curse struct {
+		ID  int    `json:"id"`
+		URL string `json:"url"`
+	} `json:"curse"`
 }
